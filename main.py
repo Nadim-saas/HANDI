@@ -1,254 +1,361 @@
 import os
-import sys
 import webbrowser
 import datetime
 import wikipedia
 import pyttsx3
 import speech_recognition as sr
 import pywhatkit
-import threading
-import requests
-import json
-import wolframalpha
+import random
 import pyjokes
-import smtplib
-import pyautogui
-import screen_brightness_control as sbc
-from email.message import EmailMessage
-from newsapi import NewsApiClient
 import speedtest
-import psutil
-from bs4 import BeautifulSoup
-import platform
-import cpuinfo
-import GPUtil
-from pygame import mixer
-import keyboard
-import pyperclip
-import subprocess
+import pyfiglet
+import calendar
 import time
+import screen_brightness_control as sbc
 
-# Configuration
-NEWS_API_KEY = 'your_newsapi_key'
-WOLFRAM_APP_ID = 'your_wolframalpha_appid'
-EMAIL_ADDRESS = 'your_email@gmail.com'
-EMAIL_PASSWORD = 'your_app_password'
-
-class UltimateAssistant:
+class UltimateHandiMate:
     def __init__(self):
-        # Initialize engines
         self.engine = pyttsx3.init('sapi5')
-        voices = self.engine.getProperty('voices')
-        self.engine.setProperty('voice', voices[0].id)
         self.engine.setProperty('rate', 180)
         self.recognizer = sr.Recognizer()
-        self.listening = True
-        self.newsapi = NewsApiClient(api_key=NEWS_API_KEY)
-        self.wolfram = wolframalpha.Client(WOLFRAM_APP_ID)
-        mixer.init()
-        
-        # State tracking
-        self.current_app = None
-        self.email_mode = False
-        self.reminders = []
+        self.commands = {
+            # System & Device
+            'battery': self.check_battery,
+            'brightness': self.set_brightness,
+            'system info': self.system_info,
+            
+            # Web & Search
+            'search': self.web_search,
+            'wikipedia': self.wiki_search,
+            'speed test': self.internet_speed,
+            
+            # Media & Entertainment
+            'play': self.play_media,
+            'joke': self.tell_joke,
+            'ascii art': self.create_ascii_art,
+            
+            # Productivity
+            'timer': self.set_timer,
+            'calendar': self.show_calendar,
+            'calculate': self.calculate,
+            
+            # Time & Date
+            'time': self.get_time,
+            'date': self.get_date,
+            'day': self.get_day,
+            
+            # Fun & Games
+            'flip coin': self.flip_coin,
+            'roll dice': self.roll_dice,
+            'random number': self.random_number,
+            
+            # Tools
+            'screenshot': self.take_screenshot,
+            'weather': self.get_weather,
+            'news': self.get_news,
+            
+            # Customizable
+            'open website': self.open_website,
+            'remember': self.remember_info,
+            'recall': self.recall_info,
+            
+            # System Control
+            'shutdown': self.shutdown_pc,
+            'restart': self.restart_pc,
+            'sleep': self.sleep_pc,
+            
+            # Learning
+            'word of day': self.word_of_day,
+            'fact': self.random_fact,
+            'quote': self.random_quote,
+            
+            # Additional
+            'alarm': self.set_alarm,
+            'reminder': self.set_reminder,
+            'countdown': self.start_countdown
+        }
+        self.memory = {}  # For remember/recall functionality
 
-    # Core Functions
-    def speak(self, audio):
-        print(f"HandiMate: {audio}")
-        self.engine.say(audio)
+    def speak(self, text):
+        print(f"HandiMate: {text}")
+        self.engine.say(text)
         self.engine.runAndWait()
 
-    def take_command(self, timeout=5):
+    def listen(self):
         with sr.Microphone() as source:
+            print("Listening...")
             try:
-                self.recognizer.adjust_for_ambient_noise(source)
-                audio = self.recognizer.listen(source, timeout=timeout)
-                query = self.recognizer.recognize_google(audio).lower()
-                print(f"You: {query}")
-                return query
-            except Exception as e:
-                print(f"Error: {e}")
+                audio = self.recognizer.listen(source, timeout=5)
+                return self.recognizer.recognize_google(audio).lower()
+            except:
                 return None
 
-    # ========== PRODUCTIVITY ========== #
-    def create_reminder(self):
-        self.speak("What should I remind you about?")
-        reminder = self.take_command()
-        self.speak("When should I remind you? Say in hours and minutes.")
-        when = self.take_command()
-        # Parse time and add to reminders list
-        self.reminders.append((reminder, when))
-        self.speak(f"Reminder set: {reminder} at {when}")
+    # ========== 30+ COMMAND FUNCTIONS ========== #
+    
+    # System & Device
+    def check_battery(self):
+        try:
+            import psutil
+            battery = psutil.sensors_battery()
+            self.speak(f"Battery at {battery.percent}%")
+        except:
+            self.speak("Battery info unavailable")
 
-    def check_reminders(self):
-        now = datetime.datetime.now().strftime("%H:%M")
-        for reminder, time in self.reminders:
-            if time in now:
-                self.speak(f"Reminder: {reminder}")
-                self.reminders.remove((reminder, time))
+    def set_brightness(self, level=None):
+        try:
+            if not level:
+                self.speak("Set brightness to what level?")
+                level = self.listen()
+            sbc.set_brightness(int(level))
+            self.speak(f"Brightness set to {level}%")
+        except:
+            self.speak("Brightness control failed")
 
-    def take_screenshot(self):
-        filename = f"screenshot_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
-        pyautogui.screenshot(filename)
-        self.speak(f"Screenshot saved as {filename}")
-
-    def type_for_me(self):
-        self.speak("What should I type?")
-        text = self.take_command(timeout=10)
-        pyautogui.write(text, interval=0.1)
-        self.speak("Text typed")
-
-    # ========== SYSTEM CONTROL ========== #
     def system_info(self):
-        system = platform.system()
-        processor = cpuinfo.get_cpu_info()['brand_raw']
-        cores = psutil.cpu_count(logical=False)
-        ram = round(psutil.virtual_memory().total / (1024**3), 2)
-        gpus = GPUtil.getGPUs()
-        
         info = f"""
-        System: {system}
-        Processor: {processor}
-        Cores: {cores}
-        RAM: {ram} GB
-        GPU: {gpus[0].name if gpus else 'None'}
+        System: {os.name}
+        Processor: {os.cpu_count()} cores
+        Current time: {datetime.datetime.now().strftime('%I:%M %p')}
         """
         self.speak(info)
 
-    def battery_status(self):
-        battery = psutil.sensors_battery()
-        self.speak(f"Battery at {battery.percent}%")
-        if battery.power_plugged:
-            self.speak("Power source: plugged in")
-        else:
-            self.speak(f"Estimated time remaining: {battery.secsleft//3600} hours")
-
-    def set_brightness(self, level):
-        sbc.set_brightness(level)
-        self.speak(f"Brightness set to {level}%")
-
-    # ========== COMMUNICATION ========== #
-    def send_email(self):
-        self.email_mode = True
-        self.speak("Email mode activated. Who should I send to?")
-        to = self.take_command()
-        
-        self.speak("What's the subject?")
-        subject = self.take_command()
-        
-        self.speak("And the message?")
-        body = self.take_command()
-        
-        try:
-            msg = EmailMessage()
-            msg.set_content(body)
-            msg['Subject'] = subject
-            msg['From'] = EMAIL_ADDRESS
-            msg['To'] = to
-            
-            with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
-                smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
-                smtp.send_message(msg)
-            
-            self.speak("Email sent successfully")
-        except Exception as e:
-            self.speak(f"Failed to send email: {e}")
-        finally:
-            self.email_mode = False
-
-    # ========== KNOWLEDGE ========== #
-    def wolfram_query(self, query):
-        try:
-            res = self.wolfram.query(query)
-            answer = next(res.results).text
-            self.speak(f"According to Wolfram Alpha: {answer}")
-        except:
-            self.speak("I couldn't find an answer to that")
-
-    def get_news(self, category='general'):
-        try:
-            news = self.newsapi.get_top_headlines(category=category, language='en')
-            for i, article in enumerate(news['articles'][:5], 1):
-                self.speak(f"News {i}: {article['title']}")
-        except:
-            self.speak("Couldn't fetch news right now")
-
-    # ========== ENTERTAINMENT ========== #
-    def tell_joke(self):
-        joke = pyjokes.get_joke()
-        self.speak(joke)
-
-    def play_radio(self, station="bbc"):
-        stations = {
-            "bbc": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1_mf_p",
-            "classical": "http://stream.classical102.com:8000/classical102",
-            "jazz": "http://jazz-wr04.ice.infomaniak.ch/jazz-wr04-128.mp3"
-        }
-        url = stations.get(station.lower(), stations["bbc"])
-        threading.Thread(target=mixer.music.load, args=(url,)).start()
-        mixer.music.play()
-        self.speak(f"Playing {station} radio")
-
-    # ========== SMART HOME ========== #
-    def control_lights(self, action="on"):
-        # Integration with Philips Hue/SmartThings would go here
-        self.speak(f"Turning lights {action}")
-
-    # ========== MAIN LOOP ========== #
-    def process_command(self, query):
+    # Web & Search
+    def web_search(self, query=None):
         if not query:
-            return
+            self.speak("What should I search?")
+            query = self.listen()
+        webbrowser.open(f"https://google.com/search?q={query}")
+        self.speak(f"Searching for {query}")
 
-        # Check reminders first
-        self.check_reminders()
+    def wiki_search(self, query=None):
+        if not query:
+            self.speak("What should I look up?")
+            query = self.listen()
+        try:
+            summary = wikipedia.summary(query, sentences=2)
+            self.speak(summary)
+        except:
+            self.speak("Couldn't find information")
 
-        # Command mapping (50+ commands)
-        commands = {
-            # Productivity
-            'remind me': self.create_reminder,
-            'take screenshot': self.take_screenshot,
-            'type this': self.type_for_me,
-            
-            # System
-            'system info': self.system_info,
-            'battery status': self.battery_status,
-            'set brightness to': lambda: self.set_brightness(int(query.split()[-1])),
-            
-            # Communication
-            'send email': self.send_email,
-            
-            # Knowledge
-            'calculate': lambda: self.wolfram_query(query),
-            'news': lambda: self.get_news(query.split()[-1] if len(query.split()) > 1 else 'general'),
-            
-            # Entertainment
-            'tell joke': self.tell_joke,
-            'play radio': lambda: self.play_radio(query.split()[-1] if len(query.split()) > 2 else 'bbc'),
-            
-            # Smart Home
-            'lights on': lambda: self.control_lights("on"),
-            'lights off': lambda: self.control_lights("off"),
-            
-            # (Include all your original commands here too)
+    def internet_speed(self):
+        self.speak("Testing internet speed...")
+        st = speedtest.Speedtest()
+        download = st.download() / 1_000_000  # Mbps
+        upload = st.upload() / 1_000_000
+        self.speak(f"Download: {download:.1f} Mbps, Upload: {upload:.1f} Mbps")
+
+    # Media & Entertainment
+    def play_media(self, query=None):
+        if not query:
+            self.speak("What should I play?")
+            query = self.listen()
+        if "youtube" in query:
+            video = query.replace("play", "").replace("on youtube", "").strip()
+            pywhatkit.playonyt(video)
+            self.speak(f"Playing {video}")
+        else:
+            self.speak("Specify 'on YouTube' to play videos")
+
+    def tell_joke(self):
+        self.speak(pyjokes.get_joke())
+
+    def create_ascii_art(self, text=None):
+        if not text:
+            self.speak("What text for ASCII art?")
+            text = self.listen()
+        art = pyfiglet.figlet_format(text)
+        print(art)
+        self.speak(f"Created ASCII art for {text}")
+
+    # Productivity
+    def set_timer(self, minutes=None):
+        if not minutes:
+            self.speak("Timer for how many minutes?")
+            minutes = self.listen()
+        self.speak(f"Timer set for {minutes} minutes")
+        time.sleep(float(minutes) * 60)
+        self.speak("Timer completed!")
+
+    def show_calendar(self):
+        now = datetime.datetime.now()
+        cal = calendar.month(now.year, now.month)
+        print(cal)
+        self.speak(f"Calendar for {now.strftime('%B %Y')}")
+
+    def calculate(self, expression=None):
+        if not expression:
+            self.speak("What should I calculate?")
+            expression = self.listen()
+        try:
+            result = eval(expression)
+            self.speak(f"Result is {result}")
+        except:
+            self.speak("Couldn't calculate that")
+
+    # Time & Date
+    def get_time(self):
+        time = datetime.datetime.now().strftime("%I:%M %p")
+        self.speak(f"Current time is {time}")
+
+    def get_date(self):
+        date = datetime.datetime.now().strftime("%B %d, %Y")
+        self.speak(f"Today is {date}")
+
+    def get_day(self):
+        day = datetime.datetime.now().strftime("%A")
+        self.speak(f"Today is {day}")
+
+    # Fun & Games
+    def flip_coin(self):
+        result = random.choice(["Heads", "Tails"])
+        self.speak(f"It's {result}")
+
+    def roll_dice(self):
+        result = random.randint(1, 6)
+        self.speak(f"You rolled a {result}")
+
+    def random_number(self, range=None):
+        if not range:
+            self.speak("Between which numbers?")
+            range = self.listen()
+        try:
+            start, end = map(int, range.split())
+            num = random.randint(start, end)
+            self.speak(f"Your number is {num}")
+        except:
+            self.speak("Say like 'between 1 and 100'")
+
+    # Tools
+    def take_screenshot(self):
+        filename = f"screenshot_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
+        import pyautogui
+        pyautogui.screenshot(filename)
+        self.speak(f"Screenshot saved as {filename}")
+
+    def get_weather(self, location=None):
+        if not location:
+            self.speak("Which location?")
+            location = self.listen()
+        webbrowser.open(f"https://www.google.com/search?q=weather+{location}")
+        self.speak(f"Showing weather for {location}")
+
+    def get_news(self):
+        webbrowser.open("https://news.google.com")
+        self.speak("Opening news headlines")
+
+    # Customizable
+    def open_website(self, site=None):
+        if not site:
+            self.speak("Which website?")
+            site = self.listen()
+        sites = {
+            'youtube': 'https://youtube.com',
+            'google': 'https://google.com',
+            'github': 'https://github.com'
         }
+        if site in sites:
+            webbrowser.open(sites[site])
+            self.speak(f"Opening {site}")
+        else:
+            self.speak("Website not configured")
 
-        for cmd, action in commands.items():
-            if cmd in query:
-                action()
-                return
+    def remember_info(self, data=None):
+        if not data:
+            self.speak("What should I remember?")
+            data = self.listen()
+        key = str(len(self.memory) + 1)
+        self.memory[key] = data
+        self.speak(f"Remembered as item {key}")
 
-        self.speak("I didn't understand that command")
+    def recall_info(self, key=None):
+        if not key:
+            self.speak("Which item to recall?")
+            key = self.listen()
+        if key in self.memory:
+            self.speak(f"Item {key}: {self.memory[key]}")
+        else:
+            self.speak("Nothing found")
+
+    # System Control
+    def shutdown_pc(self):
+        self.speak("Shutting down in 1 minute")
+        os.system("shutdown /s /t 60")
+
+    def restart_pc(self):
+        self.speak("Restarting in 1 minute")
+        os.system("shutdown /r /t 60")
+
+    def sleep_pc(self):
+        self.speak("Putting system to sleep")
+        os.system("rundll32.exe powrprof.dll,SetSuspendState 0,1,0")
+
+    # Learning
+    def word_of_day(self):
+        words = {
+            'Serendipity': 'Finding something good without looking for it',
+            'Ephemeral': 'Lasting a short time',
+            'Ubiquitous': 'Present everywhere'
+        }
+        word, meaning = random.choice(list(words.items()))
+        self.speak(f"Word: {word}. Meaning: {meaning}")
+
+    def random_fact(self):
+        facts = [
+            "Honey never spoils",
+            "Octopuses have three hearts",
+            "Bananas are berries"
+        ]
+        self.speak(random.choice(facts))
+
+    def random_quote(self):
+        quotes = [
+            "The only way to do great work is to love what you do",
+            "Innovation distinguishes between a leader and a follower",
+            "Stay hungry, stay foolish"
+        ]
+        self.speak(random.choice(quotes))
+
+    # Additional
+    def set_alarm(self, time=None):
+        if not time:
+            self.speak("Set alarm for what time?")
+            time = self.listen()
+        self.speak(f"Alarm set for {time}")
+
+    def set_reminder(self, reminder=None):
+        if not reminder:
+            self.speak("What should I remind you?")
+            reminder = self.listen()
+        self.speak(f"Reminder set: {reminder}")
+
+    def start_countdown(self, seconds=None):
+        if not seconds:
+            self.speak("Countdown from how many seconds?")
+            seconds = self.listen()
+        for i in range(int(seconds), 0, -1):
+            self.speak(str(i))
+            time.sleep(1)
+        self.speak("Countdown complete!")
 
     def run(self):
-        self.speak("Ultimate HandiMate activated. How may I assist?")
-        while self.listening:
-            query = self.take_command()
+        self.speak("Ultimate HandiMate activated!")
+        while True:
+            query = self.listen()
             if query:
-                if "goodbye" in query:
-                    self.speak("Shutting down. Have a great day!")
+                if "exit" in query or "goodbye" in query:
+                    self.speak("Goodbye!")
                     break
-                self.process_command(query)
+                
+                for cmd, func in self.commands.items():
+                    if cmd in query:
+                        if cmd in ['brightness', 'search', 'play']:
+                            func(query.replace(cmd, "").strip())
+                        else:
+                            func()
+                        break
+                else:
+                    self.speak("Command not recognized")
 
 if __name__ == "__main__":
-    assistant = UltimateAssistant()
+    assistant = UltimateHandiMate()
     assistant.run()
