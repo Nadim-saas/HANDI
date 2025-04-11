@@ -1,52 +1,53 @@
-# HANDI
-🚀 Project "HANDI" – A no-bs AI personal assistant that actually solves problems (not just small talk)
+# 🚀 HANDI Voice Assistant
 
-Key Improvements:
-  No UI - Pure Functionality: Removed all PyQt5 dependencies to eliminate those deprecation warnings.
-  
-  Non-Blocking Operations:
-  
-  YouTube/Google searches now run in separate threads
-  
-  Won't get stuck during web operations
-  
-  Maintains responsiveness during long-running tasks
+[![License: Non-Commercial](https://img.shields.io/badge/License-Non--Commercial-blue.svg)](LICENSE)
+[![Python 3.6+](https://img.shields.io/badge/Python-3.6+-yellow.svg)](https://www.python.org/)
 
-All Original Features:
-
-  Kept all your website openings
-  
-  Maintained all program controls
-  
-  Preserved music playback, time telling, and searches
-
-Better Error Handling:
-
-  More robust voice recognition
-  
-  Clearer error messages
-  
-  Won't crash on failed operations
-
-Simplified Architecture:
-
-  Single-threaded with background operations
-  
-  Easier to maintain and extend
-  
-  Clean separation of concerns
-
-To use this version:
-
-Install required packages: pip install pyttsx3 speechrecognition pywhatkit wikipedia
-
-Run the script normally
-
-Speak your commands - it will listen continuously
-
-The assistant will now handle YouTube searches and other operations without getting stuck, while maintaining all the functionality
+A Python-based voice assistant with natural language processing capabilities, inspired by Iron Man's JARVIS.
 
 
-## 🔒 License  
-This project is **free for non-commercial use**.  
-**Commercial use requires permission** – [Contact me](nadimmostofa2012@email.com).  
+
+## ✨ Features
+
+- **Voice-controlled operations**  
+- **Web browsing** (Google, YouTube, Wikipedia, etc.)  
+- **Application control** (VS Code, Notepad, Calculator)  
+- **Music playback**  
+- **Real-time information** (time, date)  
+- **Wikipedia knowledge queries**  
+
+## 🛠️ Installation
+
+1. **Clone the repository**:
+
+2.Install dependencies:
+
+- pip install -r requirements.txt
+
+3. Run JARVIS:
+
+- python main.py
+
+📋 Requirements
+
+-Python 3.6+
+-Windows OS (for SAPI5 voice engine)
+-Microphone
+
+🎯 Usage
+Simply speak commands after activation:
+
+"Open YouTube"
+"Search on Google for AI news"
+"Play music"
+"What time is it?"
+"Who is Tony Stark?"
+"Exit"
+
+**for more commands read the code**
+
+
+
+📜 License
+This project is licensed under the Non-Commercial License.
+For commercial use inquiries, please contact [nadimmostofa2012@gmail.com].
