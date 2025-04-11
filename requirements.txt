@@ -1,20 +1,22 @@
 beautifulsoup4
-cpuinfo
+bs4
+cpuinfo==9.0.0  # correct name is py-cpuinfo
 GPUtil
 keyboard
-newsapi-python
 platformdirs
-playsound
-psutil
+pygame
 pyautogui
 pyjokes
 pyperclip
 pyttsx3
-pygame
 pywhatkit
 requests
 screen-brightness-control
 SpeechRecognition
-wolframalpha
 wikipedia
+wolframalpha
+smtplib  # built-in, no need to install
+psutil
+speedtest-cli
+newsapi-python
 pyaudio
