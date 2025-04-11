@@ -1,96 +1,131 @@
-# 🤖 Ultimate HandiMate – Your Personal AI Assistant (Python)
+# 🤖 Ultimate HandiMate - Your Complete Voice Assistant
 
-Ultimate HandiMate is a voice-controlled AI desktop assistant built using Python. It performs a wide variety of tasks including productivity aids, system control, entertainment, communication, and more—all through voice commands.
+
+**The most feature-rich Python voice assistant** with 30+ ready-to-use commands for productivity, entertainment, and system control - **no complex setup required**.
+
+[![Python 3.6+](https://img.shields.io/badge/Python-3.6+-yellow.svg)](https://www.python.org/)
+[![License: Non-Commercial](https://img.shields.io/badge/License-Non--Commercial-blue.svg)](LICENSE)
 
 ---
 
-## 🎯 Features
+## 🚀 Key Features
 
-### 🧠 Core Abilities
-- Natural voice interaction (speech recognition + text-to-speech)
-- Wakeup and command loop with graceful shutdown
-- Intelligent command processing
-
-### 📅 Productivity
-- Voice-based reminders
+### 🛠️ **System & Productivity**
+- Battery status monitoring
+- Screen brightness control
+- System resource reports
+- Timer/reminder/alarm system
 - Screenshot capture
-- Auto typing via voice
+- PC shutdown/restart controls
 
-### 🖥️ System Control
-- Battery status updates
-- Brightness adjustment
-- System hardware info (CPU, GPU, RAM)
+### 🌐 **Web & Knowledge**
+- Google/YouTube/Wikipedia search
+- Internet speed testing
+- News headlines
+- Weather forecasts
+- Word definitions & facts
 
-### 📧 Communication
-- Email composition and sending via voice
-- Secure login via Gmail SMTP
+### 🎮 **Entertainment**
+- YouTube video playback
+- Random joke generator
+- Coin flip & dice roll
+- ASCII art creator
+- Inspirational quotes
 
-### 📚 Knowledge and Tools
-- Wolfram Alpha queries
-- Wikipedia search
-- News headlines (via NewsAPI)
-
-### 🎵 Entertainment
-- Tell jokes using `pyjokes`
-- Stream live radio (BBC, Jazz, Classical)
-
-### 💡 Smart Home (Prototype)
-- Simulated control of smart home lights
-
----
-
-## 🛠️ Tech Stack & Libraries
-
-- `pyttsx3` – Text-to-speech engine
-- `speech_recognition` – Speech-to-text
-- `pywhatkit` – YouTube and WhatsApp automation
-- `pyautogui` – GUI automation
-- `wolframalpha` – Computational intelligence
-- `newsapi` – News headlines
-- `psutil`, `cpuinfo`, `GPUtil` – System monitoring
-- `pyjokes` – Random jokes
-- `pygame.mixer` – Audio playback
-- `keyboard`, `pyperclip`, `subprocess`, `webbrowser` – Utility modules
+### 🧠 **Smart Features**
+- Information memory/recall
+- Math calculations
+- Countdown timer
+- Calendar view
+- Custom website shortcuts
 
 ---
 
-## 🔧 Setup Instructions
+## 🧑‍💻 Quick Start
 
-1. **Install Python dependencies:**
-   ```bash
-   pip install -r requirements.txt
+### Installation
+      ```bash
+      pip install -r requirements.txt
+      python ultimate_handimate.py
 
-2. Replace API Keys and Credentials: Open the Python file and replace the placeholders with your credentials:
+Basic Usage
+Speak naturally after activation tone
 
--NEWS_API_KEY = 'your_newsapi_key'
--WOLFRAM_APP_ID = 'your_wolframalpha_appid'
--EMAIL_ADDRESS = 'your_email@gmail.com'
--EMAIL_PASSWORD = 'your_app_password'
+Try commands like:
 
-3. Run the assistant:
-   ```bash
-   python main.py
-🔒 Security Note
-For email to work, you must use an App Password (not your main password). Do not share your credentials in public repositories.
+"HandiMate, what's the time?"
 
-📌 To-Do & Ideas
--GUI interface
+"Search for Python tutorials"
 
--Wake word detection
+"Play Never Gonna Give You Up on YouTube"
 
--Face recognition integration
+"Tell me a joke"
 
--Smart home real device control (Philips Hue, etc.)
+📜 Complete Command List
+Category	Commands
+System	battery, brightness [1-100], system info, shutdown, restart
+Web	search [query], wikipedia [topic], speed test, news, weather
+Media	play [video] on youtube, joke, ascii art [text]
+Productivity	timer [mins], calendar, calculate [math], screenshot
+Fun	flip coin, roll dice, random number, quote, fact
+Memory	remember [info], recall [item]
+(Full command details in COMMANDS.md)
 
--Weather & location-based actions
+🛠️ Technical Details
+Built With
+Voice Processing: pyttsx3, SpeechRecognition
 
-📜 License
-This project is licensed under the Non-Commercial License.
-For commercial use inquiries, please contact [nadimmostofa2012@gmail.com].
+Automation: pywhatkit, pyautogui
+
+Knowledge: wikipedia, wolframalpha (optional)
+
+Utilities: psutil, screen-brightness-control, speedtest-cli
+
+Requirements
+Python 3.6+
+
+Windows/macOS/Linux
+
+Microphone
+
+Internet connection (for web features)
+
+📚 Documentation
+Command Reference
+
+Troubleshooting Guide
+
+API Integration Guide (For advanced users)
 
 🤝 Contributing
--Pull requests are welcome! For major changes, please open an issue first.
+We welcome contributions! Please:
 
-📧 Contact
--Nadim Mostofa - @Nadim-saas
--Project Link: https://github.com/Nadim-saas/HandiMate
+Fork the repository
+
+Create your feature branch
+
+Submit a pull request
+
+Current Roadmap:
+
+Wake word detection
+
+Cross-platform GUI
+
+Plugin system
+
+📜 License
+Non-Commercial License - View Details
+For commercial use, contact [nadimmostofa2012@gmail.com]
+
+🌟 About the Developer
+Nadim Mostofa
+
+GitHub: @Nadim-saas
+
+Project Link: HandiMate Repository
+
+Email: nadimmostofa2012@gmail.com
+
+"Building AI tools to simplify everyday life"
+
