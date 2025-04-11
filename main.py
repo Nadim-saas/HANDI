@@ -21,7 +21,7 @@ class VoiceAssistant:
 
     def speak(self, audio):
         """Convert text to speech"""
-        print(f"JARVIS: {audio}")
+        print(f"HANDI: {audio}")
         self.engine.say(audio)
         self.engine.runAndWait()
 
@@ -58,7 +58,7 @@ class VoiceAssistant:
             songs = [f for f in os.listdir(music_dir) if f.endswith('.mp3')]
             if songs:
                 os.startfile(os.path.join(music_dir, songs[0]))
-                self.speak("Playing music")
+                self.speak("Playing your favorite tunes")
             else:
                 self.speak("No music files found")
         else:
@@ -66,7 +66,7 @@ class VoiceAssistant:
 
     def search_google(self):
         """Handle Google search without blocking"""
-        self.speak("What should I search for?")
+        self.speak("What would you like me to search on Google?")
         query = self.take_command()
         if query:
             self.speak(f"Searching Google for {query}")
@@ -75,10 +75,10 @@ class VoiceAssistant:
 
     def search_youtube(self):
         """Handle YouTube search without blocking"""
-        self.speak("What should I search for?")
+        self.speak("What would you like to watch on YouTube?")
         query = self.take_command()
         if query:
-            self.speak(f"Searching YouTube for {query}")
+            self.speak(f"Playing {query} on YouTube")
             # Run in background to prevent blocking
             threading.Thread(target=pywhatkit.playonyt, args=(query,)).start()
 
@@ -87,9 +87,9 @@ class VoiceAssistant:
         query = query.replace("who is", "").replace("who was", "").replace("what is", "").strip()
         try:
             summary = wikipedia.summary(query, sentences=2)
-            self.speak(summary)
+            self.speak(f"Here's what I found: {summary}")
         except wikipedia.exceptions.DisambiguationError:
-            self.speak("There are multiple matches. Please be more specific.")
+            self.speak("There are multiple matches. Could you be more specific?")
         except wikipedia.exceptions.PageError:
             self.speak("I couldn't find information on that topic.")
         except Exception as e:
@@ -100,19 +100,19 @@ class VoiceAssistant:
         """Open a program"""
         try:
             os.startfile(path)
-            self.speak(f"{name} opened")
+            self.speak(f"Opening {name} for you")
         except Exception as e:
             print(f"Error opening program: {e}")
-            self.speak(f"Could not open {name}")
+            self.speak(f"Sorry, I couldn't open {name}")
 
     def close_program(self, process_name, name):
         """Close a program"""
         try:
             os.system(f"taskkill /IM {process_name} /F")
-            self.speak(f"{name} closed")
+            self.speak(f"Closing {name}")
         except Exception as e:
             print(f"Error closing program: {e}")
-            self.speak(f"Could not close {name}")
+            self.speak(f"Couldn't close {name}")
 
     def process_command(self, query):
         """Process and execute user commands"""
@@ -131,21 +131,20 @@ class VoiceAssistant:
             'open instagram': 'https://instagram.com',
             'open github': 'https://github.com',
             'open stackoverflow': 'https://stackoverflow.com',
-            # Add all other sites you want here...
         }
 
         for cmd, url in website_commands.items():
             if cmd in query:
-                self.speak(f"Opening {cmd.replace('open ', '')}")
+                self.speak(f"Opening {cmd.replace('open ', '')} for you")
                 webbrowser.open(url)
                 return
 
         # Special commands
         if 'play music' in query:
             self.play_music()
-        elif 'the time' in query:
+        elif 'the time' in query or 'what time is it' in query:
             str_time = datetime.datetime.now().strftime("%I:%M %p")
-            self.speak(f"The time is {str_time}")
+            self.speak(f"The current time is {str_time}")
         elif 'open code' in query:
             self.open_program("C:\\Users\\user\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe", "VS Code")
         elif 'close code' in query:
@@ -168,22 +167,22 @@ class VoiceAssistant:
             self.search_youtube()
         elif 'who is' in query or 'what is' in query:
             self.search_wikipedia(query)
-        elif 'quit' in query or 'exit' in query:
-            self.speak("Goodbye!")
+        elif 'quit' in query or 'exit' in query or 'goodbye' in query:
+            self.speak("Goodbye! Have a great day!")
             self.listening = False
         else:
-            self.speak("I'm not sure how to help with that. My capabilities are limited.")
+            self.speak("I'm not sure how to help with that. Try asking me something else.")
 
     def startup(self):
         """Initialization sequence"""
         startup_messages = [
-            "Initializing JARVIS",
-            "Starting all systems applications",
-            "Checking all drivers",
-            "Calibrating core processors",
-            "Verifying internet connection",
-            "All systems activated",
-            "Now online and ready"
+            "Initializing HANDI systems",
+            "Loading all modules",
+            "Checking system resources",
+            "Establishing connections",
+            "Almost ready",
+            "All systems operational",
+            "Now at your service"
         ]
 
         for message in startup_messages:
@@ -191,13 +190,13 @@ class VoiceAssistant:
 
         hour = datetime.datetime.now().hour
         if 0 <= hour < 12:
-            greeting = "Good Morning"
+            greeting = "Good morning"
         elif 12 <= hour < 18:
-            greeting = "Good Afternoon"
+            greeting = "Good afternoon"
         else:
-            greeting = "Good Evening"
+            greeting = "Good evening"
 
-        self.speak(f"{greeting}, I am JARVIS. Online and ready. Please tell me how may I help you")
+        self.speak(f"{greeting}! I am HANDI, your personal assistant. How can I help you today?")
 
     def run(self):
         """Main execution loop"""
