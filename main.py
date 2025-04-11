@@ -21,7 +21,7 @@ class VoiceAssistant:
 
     def speak(self, audio):
         """Convert text to speech"""
-        print(f"HANDI: {audio}")
+        print(f"HandiMate: {audio}")
         self.engine.say(audio)
         self.engine.runAndWait()
 
@@ -44,11 +44,11 @@ class VoiceAssistant:
                 return None
             except sr.UnknownValueError:
                 print("Could not understand audio")
-                self.speak("I didn't catch that. Please try again.")
+                self.speak("I didn't catch that. Please repeat.")
                 return None
             except sr.RequestError as e:
                 print(f"Recognition error: {e}")
-                self.speak("There was an error with the speech service.")
+                self.speak("Speech service unavailable.")
                 return None
 
     def play_music(self):
@@ -58,7 +58,7 @@ class VoiceAssistant:
             songs = [f for f in os.listdir(music_dir) if f.endswith('.mp3')]
             if songs:
                 os.startfile(os.path.join(music_dir, songs[0]))
-                self.speak("Playing your favorite tunes")
+                self.speak("Playing music")
             else:
                 self.speak("No music files found")
         else:
@@ -66,20 +66,18 @@ class VoiceAssistant:
 
     def search_google(self):
         """Handle Google search without blocking"""
-        self.speak("What would you like me to search on Google?")
+        self.speak("Your Google search?")
         query = self.take_command()
         if query:
-            self.speak(f"Searching Google for {query}")
-            # Run in background to prevent blocking
+            self.speak(f"Searching for {query}")
             threading.Thread(target=pywhatkit.search, args=(query,)).start()
 
     def search_youtube(self):
         """Handle YouTube search without blocking"""
-        self.speak("What would you like to watch on YouTube?")
+        self.speak("What should I play?")
         query = self.take_command()
         if query:
-            self.speak(f"Playing {query} on YouTube")
-            # Run in background to prevent blocking
+            self.speak(f"Playing {query}")
             threading.Thread(target=pywhatkit.playonyt, args=(query,)).start()
 
     def search_wikipedia(self, query):
@@ -87,32 +85,32 @@ class VoiceAssistant:
         query = query.replace("who is", "").replace("who was", "").replace("what is", "").strip()
         try:
             summary = wikipedia.summary(query, sentences=2)
-            self.speak(f"Here's what I found: {summary}")
+            self.speak(summary)
         except wikipedia.exceptions.DisambiguationError:
-            self.speak("There are multiple matches. Could you be more specific?")
+            self.speak("Multiple results found. Be more specific.")
         except wikipedia.exceptions.PageError:
-            self.speak("I couldn't find information on that topic.")
+            self.speak("No information found.")
         except Exception as e:
             print(f"Wikipedia error: {e}")
-            self.speak("There was an error fetching information.")
+            self.speak("Search failed.")
 
     def open_program(self, path, name):
         """Open a program"""
         try:
             os.startfile(path)
-            self.speak(f"Opening {name} for you")
+            self.speak(f"Opening {name}")
         except Exception as e:
             print(f"Error opening program: {e}")
-            self.speak(f"Sorry, I couldn't open {name}")
+            self.speak(f"Can't open {name}")
 
     def close_program(self, process_name, name):
         """Close a program"""
         try:
             os.system(f"taskkill /IM {process_name} /F")
-            self.speak(f"Closing {name}")
+            self.speak(f"Closed {name}")
         except Exception as e:
             print(f"Error closing program: {e}")
-            self.speak(f"Couldn't close {name}")
+            self.speak(f"Can't close {name}")
 
     def process_command(self, query):
         """Process and execute user commands"""
@@ -135,16 +133,16 @@ class VoiceAssistant:
 
         for cmd, url in website_commands.items():
             if cmd in query:
-                self.speak(f"Opening {cmd.replace('open ', '')} for you")
+                self.speak(f"Opening {cmd.replace('open ', '')}")
                 webbrowser.open(url)
                 return
 
         # Special commands
         if 'play music' in query:
             self.play_music()
-        elif 'the time' in query or 'what time is it' in query:
+        elif 'the time' in query:
             str_time = datetime.datetime.now().strftime("%I:%M %p")
-            self.speak(f"The current time is {str_time}")
+            self.speak(f"Time is {str_time}")
         elif 'open code' in query:
             self.open_program("C:\\Users\\user\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe", "VS Code")
         elif 'close code' in query:
@@ -167,22 +165,20 @@ class VoiceAssistant:
             self.search_youtube()
         elif 'who is' in query or 'what is' in query:
             self.search_wikipedia(query)
-        elif 'quit' in query or 'exit' in query or 'goodbye' in query:
-            self.speak("Goodbye! Have a great day!")
+        elif 'quit' in query or 'exit' in query:
+            self.speak("Shutting down")
             self.listening = False
         else:
-            self.speak("I'm not sure how to help with that. Try asking me something else.")
+            self.speak("Command not recognized")
 
     def startup(self):
         """Initialization sequence"""
         startup_messages = [
-            "Initializing HANDI systems",
-            "Loading all modules",
-            "Checking system resources",
+            "Booting systems",
+            "Loading modules",
+            "Checking resources",
             "Establishing connections",
-            "Almost ready",
-            "All systems operational",
-            "Now at your service"
+            "Ready"
         ]
 
         for message in startup_messages:
@@ -196,7 +192,7 @@ class VoiceAssistant:
         else:
             greeting = "Good evening"
 
-        self.speak(f"{greeting}! I am HANDI, your personal assistant. How can I help you today?")
+        self.speak(f"{greeting}, I am HandiMate. How can I assist?")
 
     def run(self):
         """Main execution loop"""
