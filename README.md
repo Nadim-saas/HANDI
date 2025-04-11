@@ -1,4 +1,4 @@
-# 🚀 HANDI Voice Assistant
+# 🚀 HandiMate Voice Assistant
 
 [![License: Non-Commercial](https://img.shields.io/badge/License-Non--Commercial-blue.svg)](LICENSE)
 [![Python 3.6+](https://img.shields.io/badge/Python-3.6+-yellow.svg)](https://www.python.org/)
