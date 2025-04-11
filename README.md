@@ -1,53 +1,96 @@
-# 🚀 HandiMate Voice Assistant
+# 🤖 Ultimate HandiMate – Your Personal AI Assistant (Python)
 
-[![License: Non-Commercial](https://img.shields.io/badge/License-Non--Commercial-blue.svg)](LICENSE)
-[![Python 3.6+](https://img.shields.io/badge/Python-3.6+-yellow.svg)](https://www.python.org/)
+Ultimate HandiMate is a voice-controlled AI desktop assistant built using Python. It performs a wide variety of tasks including productivity aids, system control, entertainment, communication, and more—all through voice commands.
 
-A Python-based voice assistant with natural language processing capabilities, inspired by Iron Man's JARVIS.
+---
 
+## 🎯 Features
 
+### 🧠 Core Abilities
+- Natural voice interaction (speech recognition + text-to-speech)
+- Wakeup and command loop with graceful shutdown
+- Intelligent command processing
 
-## ✨ Features
+### 📅 Productivity
+- Voice-based reminders
+- Screenshot capture
+- Auto typing via voice
 
-- **Voice-controlled operations**  
-- **Web browsing** (Google, YouTube, Wikipedia, etc.)  
-- **Application control** (VS Code, Notepad, Calculator)  
-- **Music playback**  
-- **Real-time information** (time, date)  
-- **Wikipedia knowledge queries**  
+### 🖥️ System Control
+- Battery status updates
+- Brightness adjustment
+- System hardware info (CPU, GPU, RAM)
 
-## 🛠️ Installation
+### 📧 Communication
+- Email composition and sending via voice
+- Secure login via Gmail SMTP
 
-1. **Clone the repository**:
+### 📚 Knowledge and Tools
+- Wolfram Alpha queries
+- Wikipedia search
+- News headlines (via NewsAPI)
 
-2.Install dependencies:
+### 🎵 Entertainment
+- Tell jokes using `pyjokes`
+- Stream live radio (BBC, Jazz, Classical)
 
-- pip install -r requirements.txt
+### 💡 Smart Home (Prototype)
+- Simulated control of smart home lights
 
-3. Run JARVIS:
+---
 
-- python main.py
+## 🛠️ Tech Stack & Libraries
 
-📋 Requirements
+- `pyttsx3` – Text-to-speech engine
+- `speech_recognition` – Speech-to-text
+- `pywhatkit` – YouTube and WhatsApp automation
+- `pyautogui` – GUI automation
+- `wolframalpha` – Computational intelligence
+- `newsapi` – News headlines
+- `psutil`, `cpuinfo`, `GPUtil` – System monitoring
+- `pyjokes` – Random jokes
+- `pygame.mixer` – Audio playback
+- `keyboard`, `pyperclip`, `subprocess`, `webbrowser` – Utility modules
 
--Python 3.6+
--Windows OS (for SAPI5 voice engine)
--Microphone
+---
 
-🎯 Usage
-Simply speak commands after activation:
+## 🔧 Setup Instructions
 
-"Open YouTube"
-"Search on Google for AI news"
-"Play music"
-"What time is it?"
-"Who is Tony Stark?"
-"Exit"
+1. **Install Python dependencies:**
+   ```bash
+   pip install -r requirements.txt
 
-**for more commands read the code**
+2. Replace API Keys and Credentials: Open the Python file and replace the placeholders with your credentials:
 
+    -NEWS_API_KEY = 'your_newsapi_key'
+    -WOLFRAM_APP_ID = 'your_wolframalpha_appid'
+    -EMAIL_ADDRESS = 'your_email@gmail.com'
+    -EMAIL_PASSWORD = 'your_app_password'
 
+3. Run the assistant:
+   ```bash
+   python main.py
+🔒 Security Note
+For email to work, you must use an App Password (not your main password). Do not share your credentials in public repositories.
+
+📌 To-Do & Ideas
+-GUI interface
+
+-Wake word detection
+
+-Face recognition integration
+
+-Smart home real device control (Philips Hue, etc.)
+
+-Weather & location-based actions
 
 📜 License
 This project is licensed under the Non-Commercial License.
 For commercial use inquiries, please contact [nadimmostofa2012@gmail.com].
+
+🤝 Contributing
+-Pull requests are welcome! For major changes, please open an issue first.
+
+📧 Contact
+-Nadim Mostofa - @Nadim-saas
+-Project Link: https://github.com/Nadim-saas/HandiMate
