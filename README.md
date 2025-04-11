@@ -62,10 +62,10 @@ Ultimate HandiMate is a voice-controlled AI desktop assistant built using Python
 
 2. Replace API Keys and Credentials: Open the Python file and replace the placeholders with your credentials:
 
-    -NEWS_API_KEY = 'your_newsapi_key'
-    -WOLFRAM_APP_ID = 'your_wolframalpha_appid'
-    -EMAIL_ADDRESS = 'your_email@gmail.com'
-    -EMAIL_PASSWORD = 'your_app_password'
+-NEWS_API_KEY = 'your_newsapi_key'
+-WOLFRAM_APP_ID = 'your_wolframalpha_appid'
+-EMAIL_ADDRESS = 'your_email@gmail.com'
+-EMAIL_PASSWORD = 'your_app_password'
 
 3. Run the assistant:
    ```bash
